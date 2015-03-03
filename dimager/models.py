@@ -12,7 +12,6 @@ class ProfileQuery(models.Model):
 class ImagerProfile(models.Model):
     user = models.OneToOneField(User)
 
-
     picture = models.ImageField(upload_to='profile_image', blank=True, max_length=100)
     picture_privacy = models.BooleanField(default=True)
 
