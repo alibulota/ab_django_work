@@ -3,8 +3,15 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 
+class ProfileQuery(models.Model):
+    def get_queryset(self):
+        qs = super(ProfileQuery, self).get_queryset()
+        return qs.filter(user__is_active__exact=True)
+
+
 class ImagerProfile(models.Model):
     user = models.OneToOneField(User)
+
 
     picture = models.ImageField(upload_to='profile_image', blank=True, max_length=100)
     picture_privacy = models.BooleanField(default=True)
@@ -20,9 +27,9 @@ class ImagerProfile(models.Model):
     name_privacy = models.BooleanField(default=True)
     email_privacy = models.BooleanField(default=True)
 
+    def is_active(self):
+        return self.user.is_active
+
+
     def __unicode__(self):
         return self.user.username
-
-
-# class Variable(models.Model):
-#     is_active = models.BooleanField(default=True)
