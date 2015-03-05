@@ -17,7 +17,7 @@ class TestCase_ImagerProfile(TestCase):
 
     def test_create_profile(self):
         '''Test that every user gets a profile'''
-        assert self.test_user.ImagerProfile
+        assert self.test_user.profile
 
     def test_delete_profile(self):
         '''Test that profile deleted from database'''
@@ -26,7 +26,7 @@ class TestCase_ImagerProfile(TestCase):
 
     def test_is_active(self):
         '''Test that user is active user'''
-        assert self.test_user.ImagerProfile.is_active()
+        assert self.test_user.profile.is_active()
 
 
 class TestCase_FollowBlock(TestCase):
@@ -36,33 +36,34 @@ class TestCase_FollowBlock(TestCase):
 
     def test_followers(self):
         '''Test for follower relationship'''
-        self.elenore.ImagerProfile.follow(self.rigby.ImagerProfile)
-        self.assertIn(self.elenore.ImagerProfile, self.rigby.ImagerProfile.followers.all())
+        self.elenore.profile.follow(self.rigby.profile)
+        self.assertIn(self.elenore.profile, self.rigby.profile.followers())
 
-    def test_following(self):
+    def test_following_list(self):
         '''Test for following relationship'''
-        self.elenore.ImagerProfile.follow(self.rigby.ImagerProfile)
-        self.assertIn(self.elenore.ImagerProfile, self.rigby.ImagerProfile.following.all())
+        self.elenore.profile.follow(self.rigby.profile)
+        self.assertIn(self.rigby.profile, self.elenore.profile.following_list())
 
     def test_follow(self):
         '''Test for ability to follow'''
-        self.elenore.ImagerProfile.follow(self.rigby.ImagerProfile)
-        self.assertIn(self.elenore.ImagerProfile, self.rigby.ImagerProfile.follow.all())
+        self.elenore.profile.follow(self.rigby.profile)
+        self.assertIn(self.rigby.profile, self.elenore.profile.following.all())
 
     def test_unfollow(self):
-        self.elenore.ImagerProfile.follow(self.rigby.ImagerProfile)
-        self.rigby.ImagerProfile.unfollow(self.elenore.ImagerProfile)
-        self.assertNotIn(self.rigby.ImagerProfile, self.elenore.ImagerProfile.follow())
+        '''Test for ability to unfollow'''
+        self.elenore.profile.follow(self.rigby.profile)
+        self.elenore.profile.unfollow(self.rigby.profile)
+        self.assertNotIn(self.rigby.profile, self.elenore.profile.following_list())
 
-    def test_blcok(self):
-        self.elenore.ImagerProfile.follow(self.rigby.ImagerProfile)
-        self.rigby.ImagerProfile.block(self.elenore.ImagerProfile)
-        self.assertNotIn(self.rigby.ImagerProfile, self.elenore.ImagerProfile.following())
+    def test_block(self):
+        self.elenore.profile.follow(self.rigby.profile)
+        self.rigby.profile.block(self.elenore.profile)
+        self.assertIn(self.elenore.profile, self.rigby.profile.blocking.all())
 
     def test_unblock(self):
         '''Test ability to unblock user profile'''
-        self.elenore.ImagerProfile.follow(self.rigby.ImagerProfile)
-        self.rigby.ImagerProfile.block(self.elenore.ImagerProfile)
-        self.assertNotIn(self.rigby.ImagerProfile, self.elenore.ImagerProfile.following())
-        self.rigby.ImagerProfile.unblock(self.elenore.ImagerProfile)
-        self.assertIn(self.rigby.ImagerProfile, self.elenore.ImagerProfile.following())
+        self.elenore.profile.follow(self.rigby.profile)
+        self.rigby.profile.block(self.elenore.profile)
+        self.assertIn(self.elenore.profile, self.rigby.profile.blocking.all())
+        self.rigby.profile.unblock(self.elenore.profile)
+        self.assertNotIn(self.elenore.profile, self.rigby.profile.blocking.all())

@@ -15,7 +15,7 @@ class ActiveImagerManager(models.Manager):
 class ImagerProfile(models.Model):
     '''Expanding user profile'''
 
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name='profile')
     following = models.ManyToManyField(
         'self', related_name='_following', symmetrical=False)
     blocking = models.ManyToManyField(
@@ -50,7 +50,7 @@ class ImagerProfile(models.Model):
         '''List all users followers'''
         return ImagerProfile.objects.filter(following__exact=self)
 
-    def following(self):
+    def following_list(self):
         '''List of all profiles user is following'''
         return self.following.all()
 
