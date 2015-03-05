@@ -7,5 +7,5 @@ from dimager.models import ImagerProfile
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, *args, **kwargs):
     if kwargs["created"]:
-        ip = ImagerProfile(user=instance)
-        ip.save()
+        new_profile = ImagerProfile(user=instance)
+        new_profile.save()
