@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-# from friendship.models import Friend, Follow
+from django.utils.encoding import python_2_unicode_compatible
 
 
-class ProfileQuery(models.Model):
+class ActiveImagerManager(models.Manager):
     def get_queryset(self):
-        qs = super(ProfileQuery, self).get_queryset()
+        qs = super(ActiveImagerManager, self).get_queryset()
         return qs.filter(user__is_active__exact=True)
 
 
