@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from friendship.models import Friend, Follow
+# from friendship.models import Friend, Follow
 
 
 class ProfileQuery(models.Model):
