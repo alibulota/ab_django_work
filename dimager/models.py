@@ -10,6 +10,7 @@ class ActiveImagerManager(models.Manager):
         return qs.filter(user__is_active__exact=True)
 
 
+@python_2_unicode_compatible
 class ImagerProfile(models.Model):
 
     user = models.OneToOneField(User)
