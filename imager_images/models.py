@@ -62,6 +62,7 @@ class Album(models.Model):
         default=PRIVATE
     )
 
+
     def get_cover_photo(self):
         if self.photo_set.filter(is_cover_photo=True).count() > 0:
             return self.photo_set.filter(is_cover_photo=True)[0]
