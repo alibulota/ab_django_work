@@ -1,7 +1,19 @@
 from django.contrib import admin
-from models import Photo, Album
+from imager_images.models import Album, Photo
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 
-admin.site.register(Photo)
+# Register your models here.
+
+
+class ImagerProfileInline(admin.StackedInline):
+    model = Album, Photo
+    can_delete = False
+    verbose_name_plural = 'imager albums'
+
+
+class UserAdmin(UserAdmin):
+    inlines = (ImagerProfileInline, )
+
+
 admin.site.register(Album)
+admin.site.register(Photo)
