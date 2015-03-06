@@ -29,6 +29,9 @@ class Photo(models.Model):
         default=PRIVATE
     )
 
+    def __str__(self):
+        return self.album.title
+
 
 @python_2_unicode_compatible
 class Album(models.Model):
@@ -36,7 +39,7 @@ class Album(models.Model):
     pictures = models.ManyToManyField(
         Photo,
         related_name='album',
-        limit_choices_to={user: 'self'}
+        # limit_choices_to={user: 'self'}
     )
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
@@ -47,7 +50,7 @@ class Album(models.Model):
     PRIVATE = 'private'
     SHARED = 'shared'
     PUBLIC = 'public'
-    PHOTO_PRIVACY_OPTIONS = (
+    ALBUM_PRIVACY_OPTIONS = (
         (PRIVATE, 'private', ),
         (SHARED, 'shared', ),
         (PUBLIC, 'public', ),
@@ -55,7 +58,7 @@ class Album(models.Model):
 
     PUBLISHED = models.CharField(
         max_length=3,
-        choices=PHOTO_PRIVACY_OPTIONS,
+        choices=ALBUM_PRIVACY_OPTIONS,
         default=PRIVATE
     )
 
@@ -67,7 +70,7 @@ class Album(models.Model):
         else:
             return None
 
-    def __unicode__(self):
+    def __str__(self):
         return self.photo.name
 
 # @python_2_unicode_compatible
