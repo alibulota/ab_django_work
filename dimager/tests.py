@@ -12,21 +12,24 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = 'elenore'
 
 
-class ImageFactory(factory.django.DjangoModelFactory):
+class PhotoFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = Photo
 
-        image = factory.LazyAttribute(
-            lambda _: ContentFile(
-                factory.django.ImageField()._make_data(
-                    {'width': 1024, 'height': 768}
-                ), 'example.jpg'
-            )
-        )
+    profile = UserFactory.create(username='elenore').ImagerProfile
 
 
-class TestCase_ImagerProfile(TestCase):
-    def setUp(self):
+class AlbumFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Albums
+
+    user = UserFactory.create(username='Freddy')
+
+
+class TestCaseImagerProfile(TestCase):
+    def setup(self):
         self.test_user = UserFactory.create()
 
     def test_create_profile(self):
@@ -43,8 +46,8 @@ class TestCase_ImagerProfile(TestCase):
         assert self.test_user.profile.is_active()
 
 
-class TestCase_FollowBlock(TestCase):
-    def setUp(self):
+class TestCaseFollowBlock(TestCase):
+    def setup(self):
         self.elenore = UserFactory()
         self.rigby = UserFactory(username='rigby')
 
@@ -83,34 +86,39 @@ class TestCase_FollowBlock(TestCase):
         self.assertNotIn(self.elenore.profile, self.rigby.profile.blocking.all())
 
 
-class Test_Photo(TestCase):
-    def setUp(self):
-        self.elenore = UserFactory()
-        self.photo = ImageFactory.create(title='test photo', description='test class photo')
+class TestPhoto(TestCase):
+    def setup(self):
+        self.elenor = UserFactory.create()
+        self.rigby = UserFactory.create(username='rigby')
+        self.elenorphoto = PhotoFactory.create(profile=self.elenor.ImagerProfile)
+        self.rigbyphoto = PhotoFactory.create(profile=self.rigby.ImagerProfile)
+
+    def test_photo_belongs_to_unique_user(self):
+        self.assertEqual(str(self.elenorphoto.profile), 'Elenor')
 
     def test_title(self):
         '''Assert that picture contains a title'''
-        assert photo.title == 'test photo'
+        self.assertEqual(self.bobphoto.title, 'No Title')
 
     def test_description(self):
         '''Assert picture contains description'''
-        assert photo.description == 'test class photo'
+        self.assertEqual(self.bobphoto.description, 'No Description')
 
     def test_date_uploaded(self):
         '''Assert photo has upload date or null'''
-        assert photo.date_uploaded == now()
+        assert Photo.date_uploaded == now()
 
     def test_date_modified(self):
-        '''Assert photo has modified date or null'''
-        assert photo.date_modified == now()
+        '''Assert Photo has modified date or null'''
+        assert Photo.date_modified == now()
 
     def test_date_published(self):
-        '''Assert photo has published date or null'''
-        assert photo.date_published == today()
+        '''Assert Photo has published date or null'''
+        assert Photo.date_published == today()
 
     def test_private(self):
         '''Assert default privacy option is private; no one can view'''
-        assert photo.date_published == True
+        self.assertEqual(self.bobphoto.published, 'private')
 
     def test_shared(self):
         '''Assert option for shared; friends can view'''
@@ -119,18 +127,27 @@ class Test_Photo(TestCase):
         '''Assert option for public; anyone can view that follows'''
 
 
-class Test_Album(TestCase):
-    def setUp(self):
-        self.album = AlbumFactory.create(title=test_album, description='test class album')
+class TestAlbum(TestCase):
+    def setup(self):
+        self.elenor = UserFactory.create()
+        self.rigby = UserFactory.create(username='rigby')
+        self.elenorphoto = PhotoFactory.create(profile=self.elenor.ImagerProfile)
+        self.rigbyphoto = PhotoFactory.create(profile=self.rigby.ImagerProfile)
+        self.rigbyalbum = AlbumFactory.create(user=self.rigby)
+        self.elenoralbum2 = AlbumFactory.create(user=self.elenor)
 
     def test_user_album(self):
         '''Assert album contains only user's photos'''
+        self.assertEqual(self.elenoralbum.user.username, 'elenor')
+        self.assertEqual(self.rigbyalbum.user.username, 'rigby')
 
     def test_title(self):
         '''Assert that album contains a title'''
+        self.assertEqual(self.rigbyalbum.title, 'No Title')
 
     def test_description(self):
         '''Assert album contains description'''
+        self.assertEqual(self.rigbyalbum.description, 'No description')
 
     def test_date_uploaded(self):
         '''Assert album has upload date or null'''
@@ -152,3 +169,5 @@ class Test_Album(TestCase):
 
     def test_cover(self):
         '''Assert one contained photo as cover for album'''
+        self.rigbyalbum.designate_cover(self.rigbyphoto)
+        self.assertEqual(self.rigbyalbum.cover, self.rigbyphoto.photo)
