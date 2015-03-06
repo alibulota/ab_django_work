@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from django.contrib import admin
+from django.contrib import admin
 from django.utils.encoding import python_2_unicode_compatible
 
 
@@ -24,13 +24,13 @@ class Photo(models.Model):
     )
 
     PUBLISHED = models.CharField(
-        max_length=3,
+        max_length=10,
         choices=PHOTO_PRIVACY_OPTIONS,
         default=PRIVATE
     )
 
     def __str__(self):
-        return self.album.title
+        return str(self.title)
 
 
 @python_2_unicode_compatible
@@ -57,22 +57,22 @@ class Album(models.Model):
     )
 
     PUBLISHED = models.CharField(
-        max_length=3,
+        max_length=10,
         choices=ALBUM_PRIVACY_OPTIONS,
         default=PRIVATE
     )
 
-
-    def get_cover_photo(self):
-        if self.photo_set.filter(is_cover_photo=True).count() > 0:
-            return self.photo_set.filter(is_cover_photo=True)[0]
-        elif self.photo_set.all().count() > 0:
-            return self.photo_set.all()[0]
-        else:
-            return None
+    cover = models.ForeignKey(Photo, blank=True, related_name='+', null=True)
+    # def get_cover_photo(self):
+    #     if self.photo_set.filter(is_cover_photo=True).count() > 0:
+    #         return self.photo_set.filter(is_cover_photo=True)[0]
+    #     elif self.photo_set.all().count() > 0:
+    #         return self.photo_set.all()[0]
+    #     else:
+    #         return None
 
     def __str__(self):
-        return self.photo.name
+        return str(self.title)
 
 # @python_2_unicode_compatible
 # class Album_Admin(admin.ModelAdmin):
