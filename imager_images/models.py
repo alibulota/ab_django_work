@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from django.contrib import admin
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Photo(models.Model):
     picture = models.ImageField(upload_to='photos')
     user = models.ForeignKey(User, related_name='photo')
@@ -27,6 +30,7 @@ class Photo(models.Model):
     )
 
 
+@python_2_unicode_compatible
 class Album(models.Model):
     user = models.ForeignKey(User, related_name='album')
     pictures = models.ManyToManyField(
@@ -54,4 +58,19 @@ class Album(models.Model):
         choices=PHOTO_PRIVACY_OPTIONS,
         default=PRIVATE
     )
-    cover = models.ForeignKey(Photo)
+
+    def get_cover_photo(self):
+        if self.photo_set.filter(is_cover_photo=True).count() > 0:
+            return self.photo_set.filter(is_cover_photo=True)[0]
+        elif self.photo_set.all().count() > 0:
+            return self.photo_set.all()[0]
+        else:
+            return None
+
+    def __unicode__(self):
+        return self.photo.name
+
+# @python_2_unicode_compatible
+# class Album_Admin(admin.ModelAdmin):
+#     search_fields = ["title"]
+#     list_display = ["title"]
