@@ -104,17 +104,17 @@ class TestPhoto(TestCase):
         '''Assert picture contains description'''
         self.assertEqual(self.bobphoto.description, 'No Description')
 
-    def test_date_uploaded(self):
-        '''Assert photo has upload date or null'''
-        assert Photo.date_uploaded == now()
+    # def test_date_uploaded(self):
+    #     '''Assert photo has upload date or null'''
+    #     assert Photo.date_uploaded == now()
 
-    def test_date_modified(self):
-        '''Assert Photo has modified date or null'''
-        assert Photo.date_modified == now()
+    # def test_date_modified(self):
+    #     '''Assert Photo has modified date or null'''
+    #     assert Photo.date_modified == now()
 
-    def test_date_published(self):
-        '''Assert Photo has published date or null'''
-        assert Photo.date_published == today()
+    # def test_date_published(self):
+    #     '''Assert Photo has published date or null'''
+    #     assert Photo.date_published == today()
 
     def test_private(self):
         '''Assert default privacy option is private; no one can view'''
