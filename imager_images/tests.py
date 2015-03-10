@@ -1,25 +1,46 @@
-from dimager.models import Photo, Album
+from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
 from django.test import TestCase
 import factory
+import datetime
+
+
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+        django_get_or_create = ('username',)
+    username = 'elenore'
 
 
 class PhotoFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Photo
+    picture = factory.django.ImageField()
+    title = 'image1'
+    description = 'a photo'
 
 
 class AlbumFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Album
+    title = 'album1'
+    description = 'an album'
 
 
 class TestPhoto(TestCase):
     def setUp(self):
-        self.onephoto = PhotoFactory.create(title='image1')
-        self.twophoto = PhotoFactory.create(title='image2')
+        self.elenore = UserFactory()
+        self.onephoto = PhotoFactory.create(user=self.elenore)
+        self.twophoto = PhotoFactory.create(user=self.elenore, PUBLISHED='shared')
+        self.threephoto = PhotoFactory.create(user=self.elenore, PUBLISHED='public')
+
+    def test_picture(self):
+        assert self.onephoto.picture.name.startswith('photos/example')
+
+    def test_user(self):
+        assert self.onephoto.user == self.elenore
 
     def test_title(self):
         '''Assert that picture contains a title'''
@@ -27,39 +48,38 @@ class TestPhoto(TestCase):
 
     def test_description(self):
         '''Assert picture contains description'''
-        self.assertEqual(self.bobphoto.description, 'No Description')
+        self.assertEqual(self.onephoto.description, 'a photo')
 
-    # def test_date_uploaded(self):
-    #     '''Assert photo has upload date or null'''
-    #     assert Photo.date_uploaded == now()
+    def test_date_uploaded(self):
+        '''Assert photo has upload date'''
+        assert self.onephoto.date_uploaded == datetime.date.today()
 
-    # def test_date_modified(self):
-    #     '''Assert Photo has modified date or null'''
-    #     assert Photo.date_modified == now()
+    def test_date_modified(self):
+        '''Assert Photo has modified date'''
+        assert self.onephoto.date_modified == datetime.date.today()
 
-    # def test_date_published(self):
-    #     '''Assert Photo has published date or null'''
-    #     assert Photo.date_published == today()
+    def test_date_published(self):
+        '''Assert Photo has published date or null'''
+        assert self.onephoto.date_published is None
 
     def test_private(self):
         '''Assert default privacy option is private; no one can view'''
-        self.assertEqual(self.bobphoto.published, 'private')
+        self.assertEqual(self.onephoto.PUBLISHED, 'private')
 
     def test_shared(self):
         '''Assert option for shared; friends can view'''
+        assert self.twophoto.PUBLISHED == 'shared'
 
     def test_public(self):
         '''Assert option for public; anyone can view that follows'''
+        assert self.threephoto.PUBLISHED == 'public'
 
 
 class TestAlbum(TestCase):
-    def setup(self):
-        self.elenor = UserFactory.create()
-        self.rigby = UserFactory.create(username='rigby')
-        self.elenorphoto = PhotoFactory.create(profile=self.elenor.ImagerProfile)
-        self.rigbyphoto = PhotoFactory.create(profile=self.rigby.ImagerProfile)
-        self.rigbyalbum = AlbumFactory.create(user=self.rigby)
-        self.elenoralbum2 = AlbumFactory.create(user=self.elenor)
+    def setUp(self):
+        self.elenore = UserFactory.create()
+        self.onephoto = PhotoFactory.create(user=self.elenore)
+        self.onealbum = AlbumFactory.create(user=self.elenore)
 
     def test_user_album(self):
         '''Assert album contains only user's photos'''
@@ -74,7 +94,7 @@ class TestAlbum(TestCase):
         '''Assert album contains description'''
         self.assertEqual(self.rigbyalbum.description, 'No description')
 
-    def test_date_uploaded(self):
+    def test_date_created(self):
         '''Assert album has upload date or null'''
 
     def test_date_modified(self):
