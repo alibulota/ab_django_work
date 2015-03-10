@@ -52,7 +52,7 @@ class ImagerProfile(models.Model):
 
     def following_list(self):
         '''List of all profiles user is following'''
-        return self.following.all()
+        return self.following.exclude(blocking=self)
 
     def follow(self, user_prof):
         '''Create following relationship between profiles, can't add self'''

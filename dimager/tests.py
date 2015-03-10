@@ -59,6 +59,7 @@ class TestCaseFollowBlock(TestCase):
         self.elenore.profile.follow(self.rigby.profile)
         self.rigby.profile.block(self.elenore.profile)
         self.assertIn(self.elenore.profile, self.rigby.profile.blocking.all())
+        self.assertNotIn(self.rigby.profile, self.elenore.profile.following_list())
 
     def test_unblock(self):
         '''Test ability to unblock user profile'''
