@@ -18,6 +18,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
     picture = factory.LazyAttribute(lambda a: File(open('photos/example.jpg')))
+    # picture = factory.django.ImageField()
     title = 'image1'
     description = 'a photo'
 
@@ -121,5 +122,6 @@ class TestAlbum(TestCase):
 
     def test_cover(self):
         '''Assert one contained photo as cover for album'''
+        self.onealbum.pictures.add(self.onephoto)
         self.onealbum.designate_cover(self.onephoto)
-        self.assertEqual(self.onealbum.cover, self.onephoto.photo)
+        self.assertEqual(self.onealbum.cover, self.onephoto)

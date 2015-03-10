@@ -63,6 +63,12 @@ class Album(models.Model):
     )
 
     cover = models.ForeignKey(Photo, blank=True, related_name='+', null=True)
+
+    def designate_cover(self, photo):
+        if photo in self.pictures.all():
+            self.cover = photo
+        else:
+            raise AttributeError("The photo isn't part of this album!")
     # def get_cover_photo(self):
     #     if self.photo_set.filter(is_cover_photo=True).count() > 0:
     #         return self.photo_set.filter(is_cover_photo=True)[0]
