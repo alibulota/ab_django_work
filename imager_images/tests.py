@@ -1,6 +1,7 @@
 from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.core.files import File
 import factory
 import datetime
 
@@ -16,7 +17,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Photo
-    picture = factory.django.ImageField()
+    picture = factory.LazyAttribute(lambda a: File(open('photos/example.jpg')))
     title = 'image1'
     description = 'a photo'
 
@@ -81,30 +82,36 @@ class TestAlbum(TestCase):
         self.onephoto = PhotoFactory.create(user=self.elenore)
         self.onealbum = AlbumFactory.create(user=self.elenore)
 
-    def test_user_album(self):
-        '''Assert album contains only user's photos'''
-        self.assertEqual(self.elenoralbum.user.username, 'elenor')
-        self.assertEqual(self.rigbyalbum.user.username, 'rigby')
+    def test_user(self):
+        assert self.onealbum.user == self.elenore
+
+    def test_pictures(self):
+        self.onealbum.pictures.add(self.onephoto)
+        assert self.onephoto in self.onealbum.pictures.all()
 
     def test_title(self):
         '''Assert that album contains a title'''
-        self.assertEqual(self.rigbyalbum.title, 'No Title')
+        self.assertEqual(self.onealbum.title, 'album1')
 
     def test_description(self):
         '''Assert album contains description'''
-        self.assertEqual(self.rigbyalbum.description, 'No description')
+        self.assertEqual(self.onealbum.description, 'an album')
 
     def test_date_created(self):
-        '''Assert album has upload date or null'''
+        '''Assert album has upload date'''
+        assert self.onealbum.date_created == datetime.date.today()
 
     def test_date_modified(self):
-        '''Assert album has modified date or null'''
+        '''Assert album has modified date'''
+        assert self.onealbum.date_modified == datetime.date.today()
 
     def test_date_published(self):
         '''Assert photo has published date or null'''
+        assert self.onealbum.date_published is None
 
     def test_private(self):
         '''Assert default privacy option is private; no one can view'''
+        assert self.onealbum.PUBLISHED == 'private'
 
     def test_shared(self):
         '''Assert option for shared; friends can view'''
@@ -114,6 +121,5 @@ class TestAlbum(TestCase):
 
     def test_cover(self):
         '''Assert one contained photo as cover for album'''
-        self.rigbyalbum.designate_cover(self.rigbyphoto)
-        self.assertEqual(self.rigbyalbum.cover, self.rigbyphoto.photo)
-
+        self.onealbum.designate_cover(self.onephoto)
+        self.assertEqual(self.onealbum.cover, self.onephoto.photo)
