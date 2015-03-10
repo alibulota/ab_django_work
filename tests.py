@@ -1,29 +1,32 @@
-from dimager.models import Photo, Album
-from django.contrib.auth.models import User
-from django.test import TestCase
-import factory
-
-
 class PhotoFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Photo
 
+    profile = UserFactory.create(username='elenore').ImagerProfile
+
 
 class AlbumFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = Album
+        model = Albums
+
+    user = UserFactory.create(username='Freddy')
 
 
 class TestPhoto(TestCase):
-    def setUp(self):
-        self.onephoto = PhotoFactory.create(title='image1')
-        self.twophoto = PhotoFactory.create(title='image2')
+    def setup(self):
+        self.elenor = UserFactory.create()
+        self.rigby = UserFactory.create(username='rigby')
+        self.elenorphoto = PhotoFactory.create(profile=self.elenor.ImagerProfile)
+        self.rigbyphoto = PhotoFactory.create(profile=self.rigby.ImagerProfile)
+
+    def test_photo_belongs_to_unique_user(self):
+        self.assertEqual(str(self.elenorphoto.profile), 'Elenor')
 
     def test_title(self):
         '''Assert that picture contains a title'''
-        self.assertEqual(self.onephoto.title, 'image1')
+        self.assertEqual(self.bobphoto.title, 'No Title')
 
     def test_description(self):
         '''Assert picture contains description'''
