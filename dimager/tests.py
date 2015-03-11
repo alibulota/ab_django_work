@@ -55,6 +55,13 @@ class TestCaseFollowBlock(TestCase):
         self.elenore.profile.unfollow(self.rigby.profile)
         self.assertNotIn(self.rigby.profile, self.elenore.profile.following_list())
 
+    def test_unfollow_not_in_list(self):
+        try:
+            self.elenore.profile.unfollow(self.rigby.profile)
+        except ValueError:
+            caughterror = True
+        assert caughterror
+
     def test_block(self):
         self.elenore.profile.follow(self.rigby.profile)
         self.rigby.profile.block(self.elenore.profile)

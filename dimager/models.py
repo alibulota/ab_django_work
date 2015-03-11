@@ -61,6 +61,8 @@ class ImagerProfile(models.Model):
 
     def unfollow(self, user_prof):
         '''Remove following relationship between profiles'''
+        if user_prof not in self.following.all():
+            raise ValueError("You weren't following this user!")
         self.following.remove(user_prof)
 
     def block(self, user_prof):
