@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.core.files import File
 import factory
 import datetime
+from django.test.utils import override_settings
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -17,8 +18,8 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Photo
-    picture = factory.LazyAttribute(lambda a: File(open('photos/example.jpg')))
-    # picture = factory.django.ImageField()
+    # picture = factory.LazyAttribute(lambda a: File(open('photos/example.jpg')))
+    picture = factory.django.ImageField()
     title = 'image1'
     description = 'a photo'
 
@@ -31,6 +32,7 @@ class AlbumFactory(factory.django.DjangoModelFactory):
     description = 'an album'
 
 
+@override_settings(MEDIA_ROOT='/tmp/django-imager/')
 class TestPhoto(TestCase):
     def setUp(self):
         self.elenore = UserFactory()
@@ -39,7 +41,8 @@ class TestPhoto(TestCase):
         self.threephoto = PhotoFactory.create(user=self.elenore, PUBLISHED='public')
 
     def test_picture(self):
-        assert self.onephoto.picture.name.startswith('photos/example')
+        print self.onephoto.picture.name
+        assert self.onephoto.picture.name.contains('photos/example')
 
     def test_user(self):
         assert self.onephoto.user == self.elenore
@@ -77,6 +80,7 @@ class TestPhoto(TestCase):
         assert self.threephoto.PUBLISHED == 'public'
 
 
+@override_settings(MEDIA_ROOT='/tmp/django-imager/')
 class TestAlbum(TestCase):
     def setUp(self):
         self.elenore = UserFactory.create()
