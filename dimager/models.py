@@ -48,11 +48,12 @@ class ImagerProfile(models.Model):
 
     def followers(self):
         '''List all users followers'''
-        return ImagerProfile.objects.filter(following__exact=self)
+        return ImagerProfile.objects.filter(following=self).exclude(
+            blocking=self).exclude(_blocking=self)
 
     def following_list(self):
         '''List of all profiles user is following'''
-        return self.following.exclude(blocking__exact=self)
+        return self.following.exclude(blocking=self).exclude(_blocking=self)
 
     def follow(self, user_prof):
         '''Create following relationship between profiles, can't add self'''
@@ -71,4 +72,6 @@ class ImagerProfile(models.Model):
 
     def unblock(self, user_prof):
         '''Unblock user relationship'''
+        if user_prof not in self.blocking.all():
+            raise ValueError("You weren't blocking this user!")
         self.blocking.remove(user_prof)

@@ -62,16 +62,33 @@ class TestCaseFollowBlock(TestCase):
             caughterror = True
         assert caughterror
 
-    def test_block(self):
+    def test_block_target(self):
+        self.elenore.profile.follow(self.rigby.profile)
+        self.elenore.profile.block(self.rigby.profile)
+        self.assertIn(self.rigby.profile, self.elenore.profile.blocking.all())
+        self.assertNotIn(self.rigby.profile, self.elenore.profile.following_list())
+        self.assertNotIn(self.elenore.profile, self.rigby.profile.followers())
+
+    def test_blocked_by_target(self):
         self.elenore.profile.follow(self.rigby.profile)
         self.rigby.profile.block(self.elenore.profile)
         self.assertIn(self.elenore.profile, self.rigby.profile.blocking.all())
         self.assertNotIn(self.rigby.profile, self.elenore.profile.following_list())
+        self.assertNotIn(self.elenore.profile, self.rigby.profile.followers())
 
     def test_unblock(self):
         '''Test ability to unblock user profile'''
         self.elenore.profile.follow(self.rigby.profile)
         self.rigby.profile.block(self.elenore.profile)
         self.assertIn(self.elenore.profile, self.rigby.profile.blocking.all())
+        self.assertNotIn(self.elenore.profile, self.rigby.profile.followers())
         self.rigby.profile.unblock(self.elenore.profile)
         self.assertNotIn(self.elenore.profile, self.rigby.profile.blocking.all())
+        self.assertIn(self.rigby.profile, self.elenore.profile.following_list())
+
+    def test_unblock_not_in_list(self):
+        try:
+            self.elenore.profile.unblock(self.rigby.profile)
+        except ValueError:
+            caughterror = True
+        assert caughterror
