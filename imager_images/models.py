@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib import admin
 from django.utils.encoding import python_2_unicode_compatible
-from imager import settings
 
 
 @python_2_unicode_compatible
@@ -40,7 +38,7 @@ class Album(models.Model):
     pictures = models.ManyToManyField(
         Photo,
         related_name='album',
-        # limit_choices_to={user: 'self'}
+        limit_choices_to={'user': user}
     )
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)

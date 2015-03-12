@@ -1,7 +1,6 @@
 from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.core.files import File
 import factory
 import datetime
 from django.test.utils import override_settings
@@ -41,8 +40,7 @@ class TestPhoto(TestCase):
         self.threephoto = PhotoFactory.create(user=self.elenore, PUBLISHED='public')
 
     def test_picture(self):
-        print self.onephoto.picture.name
-        assert self.onephoto.picture.name.contains('photos/example')
+        assert self.onephoto.picture.name.startswith('photos/example')
 
     def test_user(self):
         assert self.onephoto.user == self.elenore
@@ -84,8 +82,10 @@ class TestPhoto(TestCase):
 class TestAlbum(TestCase):
     def setUp(self):
         self.elenore = UserFactory.create()
+        self.rigby = UserFactory.create()
         self.onephoto = PhotoFactory.create(user=self.elenore)
         self.onealbum = AlbumFactory.create(user=self.elenore)
+        self.twophoto = PhotoFactory.create(user=self.rigby)
 
     def test_user(self):
         assert self.onealbum.user == self.elenore
@@ -93,6 +93,10 @@ class TestAlbum(TestCase):
     def test_pictures(self):
         self.onealbum.pictures.add(self.onephoto)
         assert self.onephoto in self.onealbum.pictures.all()
+
+    def test_pictures_wrong_user(self):
+        self.onealbum.pictures.add(self.twophoto)
+        print self.onealbum.pictures.all()
 
     def test_title(self):
         '''Assert that album contains a title'''
