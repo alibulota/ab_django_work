@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'dimager',
     'imager_images',
-    'registration',
+    # 'registration',
     
 )
 
@@ -64,7 +64,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'djangoimager',
-        'USER': 'jakeanderson',
+        'USER': 'ndraper2',
     }
 }
 
