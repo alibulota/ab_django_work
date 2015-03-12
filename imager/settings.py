@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'dimager',
     'imager_images',
+    'registration',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,3 +86,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_ACTIVATION_DAYS = 3
+
+REGISTRATION_AUTO_LOGIN = True
+
+REGISTRATION_OPEN = True
