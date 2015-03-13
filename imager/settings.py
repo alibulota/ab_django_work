@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+USER_NAME = os.environ.get('USER')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'dimager',
     'imager_images',
     'registration',
-    
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,7 +64,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'djangoimager',
-        'USER': 'ndraper2',
+        'USER': 'aabulota',
     }
 }
 
@@ -86,6 +86,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "imager/static"),
+)
+
+TEMPLATES_DIRS = [
+    os.path.join(BASE_DIR, "/django-imager/imager/templates"),
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -94,3 +102,7 @@ ACCOUNT_ACTIVATION_DAYS = 3
 REGISTRATION_AUTO_LOGIN = True
 
 REGISTRATION_OPEN = True
+
+LOGIN_URL = '/accounts/login/'
+
+LOGIN_REDIRECT_URL = '/profile/'
