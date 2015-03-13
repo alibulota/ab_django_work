@@ -2,12 +2,19 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse_lazy
+from imager import views as main_views
+from registration.backends.simple.views import RegistrationView
+
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self, request, user):
+        return '/profile/'
 
 
 urlpatterns = patterns('',
-    url(r'^$', 'imager.views.home'),
+    url(r'^$', main_views.home, name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='auth_login'),
