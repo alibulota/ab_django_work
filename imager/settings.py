@@ -64,7 +64,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'djangoimager',
-        'USER': 'aabulota',
+        'USER': 'jakeanderson',
     }
 }
 
