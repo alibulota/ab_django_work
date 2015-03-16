@@ -8,8 +8,8 @@
 
     <div id='profile_built'>
         <div id='profile_picture_area'>
-            {% if profile.profile_picture %}
-            <img class='profile_pic' src="{% static profile.profile_picture.url %}" /></br>
+            {% if profile.profile_image %}
+            <img class='profile_pic' src="{% static profile.profile_image.url %}" /></br>
             {% else %}
             <img class='profile_pic' src="{% static '/media/images/git.jpg' %}" /></br>
             {% endif %}
