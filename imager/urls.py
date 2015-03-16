@@ -33,5 +33,5 @@ urlpatterns = patterns('',
 
     url(r'^password/reset/done/$', auth_views.password_reset_done, name='auth_password_reset_done'),
 
-    url(r'^library/(?P<id>\d+)', 'dimager.views.library', name='library'),
+    url(r'^library/', 'dimager.views.library'),
 )
