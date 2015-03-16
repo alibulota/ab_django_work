@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div id='profile_content'>
+    <h1>Welcome, {% if user.first_name %}{{user.first_name}}{% else %}{{user}}{% endif %}!</h1>
+
+    <div id='profile_built'>
+        <div id='profile_picture_area'>
+            {% if profile.profile_picture %}
+            <img class='profile_pic' src="{% static profile.profile_picture.url %}" /></br>
+            {% else %}
+            <img class='profile_pic' src="{% static '/media/images/git.jpg' %}" /></br>
+            {% endif %}
+        </div>
+        <div class="information">
+            Date Joined: {{profile.user.date_joined|date:"M. d, Y"}}</br>
+            Birthday: {{profile.birthday}}</br>
+            Phone: {{profile.phone_number}}</br>
+            Followers: {{following}}</br>
+            Albums: {{num_album}}</br>
+            Photos: {{num_photo}}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
