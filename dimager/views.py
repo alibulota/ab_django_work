@@ -21,3 +21,20 @@ def user_profile(request):
         'profile': profile,
         'num_photo': num_photos
     })
+
+
+def library(request, id):
+    user = user_profile.objects.get(pk=id)
+    try:
+        albums = Album.objects.filter(user=user).all()
+    except:
+        albums = None
+    try:
+        photos = Photo.objects.filter(user=user).all()
+    except:
+        photos = None
+    return render(request, 'library.html', {
+        'user': user,
+        'albums': albums,
+        'photos': photos
+    })
