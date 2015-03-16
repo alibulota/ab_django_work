@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from dimager.forms import UserForm, ImagerProfileForm
+from imager_images import profile_image
 
 
 def register(request):
@@ -18,8 +19,8 @@ def register(request):
             profile.user = user
 
             if 'picture' in request.FILES:
-                profile.picture = request.FILES:
-                profile.picture = request.FILES['picture']
+                profile.profile_image = request.FILES
+                profile.profile_image = request.FILES['picture']
 
             profile.save()
             registered = True
