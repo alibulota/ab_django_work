@@ -12,7 +12,7 @@
         {% thumbnail album.cover.picture "200x200" crop="center" as im %}
             <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class='library_gallery'>
         {% empty %}
-            <img src="{% static '/media/images/git.jpg' %}" height="200" width="200" class="library_gallery" />
+            <img src="{% static '/media/photos/strongbad.jpeg' %}" height="200" width="200" class="library_gallery" />
         {% endthumbnail %}
     {% endfor %}
 </div>
