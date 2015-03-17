@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% block content %}
+
+{% block title %}Stream: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profileInfo">
+        <h3>{{user}}'s Stream</h3>
+        <div id="photoStream"> 
+            {% for photo in photos %}
+                <div class="photo">
+                    {% thumbnail photo.image "1000x1000" as thumb %}
+                    <a href="{{ thumb.url }}" data-lightbox="streamphotos" data-title="{{photo.description}}">
+                    <img src="{{ thumb.url }}"></a>
+                    {% endthumbnail %}
+                    <div class="meta">
+                        <div class="photoTitle">By {{photo.user}}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
