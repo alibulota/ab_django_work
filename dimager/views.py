@@ -42,7 +42,7 @@ def user_profile(request):
 
 @login_required()
 def library(request):
-    user = request.user_profile
+    user = request.user
     try:
         albums = Album.objects.filter(user=user).all()
     except:
