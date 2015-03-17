@@ -58,6 +58,35 @@ def library(request):
     })
 
 
+@login_required()
+def stream(request):
+    # import pdb; pdb.set_trace()
+    user = request.user
+    try:
+        my_albums = request.user.albums.filter(user=user).all()
+    except:
+        my_albums = None
+    # try:
+    #     followed_albums = Album.objects.filter(user=user.profile.is_following()).all()
+    # except:
+    #     followed_albums = None
+    try:
+        photos = Photo.objects.filter(user=user).all()
+    except:
+        photos = None
+    # try:
+    #     followed_photos = Photo.objects.filter(user=user.profile.is_following()).all()
+    # except:
+    #     followed_photos = None
+    return render(request, 'stream.html', {
+        'user': user,
+        'my_albums': my_albums.order_by('-date_created'),
+        # 'followed_albums': followed_albums.order_by('-date_created'),
+        'photos': photos.order_by('-date_uploaded'),
+        # 'followed_photos': followed_photos.order_by('-date_uploaded'),
+    })
+
+
 class ImagerProfileUpdateView(UpdateView):
     model = ImagerProfile
     template_name_suffix = '_update_form'
