@@ -23,7 +23,8 @@
             Photos: {{num_photo}}
         </div>
         <div class="links">
-             <a href="{{ 'library' }}">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user }}{% endif %}'s Library</a>
+             <a href="{{ '/library' }}">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user }}{% endif %}'s Library</a>
+             <a href="{{ '/stream' }}">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user }}{% endif %}'s Stream</a>
         </div>
     </div>
 </div>
