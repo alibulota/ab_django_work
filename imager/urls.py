@@ -36,6 +36,9 @@ urlpatterns = patterns('',
     url(r'^password/reset/done/$', auth_views.password_reset_done, name='auth_password_reset_done'),
 
     url(r'^library/', 'dimager.views.library'),
-)
+
+    url(r'^stream/', 'dimager.views.stream'),
+
+    )
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
