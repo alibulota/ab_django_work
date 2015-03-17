@@ -11,7 +11,7 @@
             {% if profile.picture %}
             <img class='profile_pic' src="{{ profile.picture.url }}" /></br>
             {% else %}
-            <img class='profile_pic' src="{% static '/media/images/git.jpg' %}" /></br>
+            <img class='profile_pic' src="{% static '/media/photos/strongbad.jpg' %}" /></br>
             {% endif %}
         </div>
         <div class="information">
@@ -21,6 +21,9 @@
             Followers: {{following}}</br>
             Albums: {{num_album}}</br>
             Photos: {{num_photo}}
+        </div>
+        <div class="links">
+             <a href="{{ 'library' }}">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user }}{% endif %}'s Library</a>
         </div>
     </div>
 </div>
