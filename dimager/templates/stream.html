@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% load thumbnail %}
+
 {% block content %}
 
 {% block title %}Stream: {{user}}{% endblock %}
-
+{% load thumbnail %}
 {% block body %}
     <div id="profileInfo">
         <h3>{{user}}'s Stream</h3>
