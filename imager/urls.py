@@ -21,7 +21,7 @@ urlpatterns = patterns('',
 
     url(r'^profile/', 'dimager.views.user_profile'),
 
-    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='auth_login'),   
+    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='auth_login'),
 
     url(r'^logout/$', auth_views.logout, {'template_name': 'registration/logout.html'}, name='auth_logout'),
 
