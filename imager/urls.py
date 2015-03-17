@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^library/', 'dimager.views.library'),
 
     url(r'^stream/', 'dimager.views.stream'),
+    
 
     )
 if settings.DEBUG:
