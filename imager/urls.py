@@ -1,9 +1,11 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse_lazy
 from imager import views as main_views
 from registration.backends.simple.views import RegistrationView
+from django.conf import settings
 
 
 class MyRegistrationView(RegistrationView):
@@ -35,3 +37,5 @@ urlpatterns = patterns('',
 
     url(r'^library/', 'dimager.views.library'),
 )
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
