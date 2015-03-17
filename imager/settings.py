@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'dimager',
     'imager_images',
     'registration',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
 
 )
 
@@ -65,7 +65,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'djangoimager',
-        'USER': 'jakeanderson',
+        'USER': 'aabulota',
     }
 }
 
@@ -99,6 +99,7 @@ TEMPLATES_DIRS = [
     os.path.join(BASE_DIR, "/django-imager/imager/templates"),
 ]
 
+IMAGESTORE_SHOW_USER = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_ACTIVATION_DAYS = 3
