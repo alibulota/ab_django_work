@@ -57,42 +57,32 @@ def library(request):
     })
 
 
-@login_required
+@login_required()
 def stream(request):
     user = request.user
-    profile = user.profile
-    yours = ImagerProfile.get_profile_stream(user=user)[:20]
-    theres = ImagerProfile.get_followers_stream()[:20]
-    context = {'profile': profile, 'yours': yours, 'theres': theres}
-    return render(request, 'stream.html', context)
-
-
-    # import pdb; pdb.set_trace()
-    # user = request.user
-    # try:
-    #     my_albums = request.user.albums.filter(user=user).all()
-    # except:
-    #     my_albums = None
-    # try:
-    #     followed_albums = Album.objects.filter(user=user.profile.is_following()).all()
-    # except:
-    #     followed_albums = None
-    # try:
-    #     photos = Photo.objects.filter(user=user).all()
-    # except:
-    #     photos = None
-    # try:
-    #     followed_photos = Photo.objects.filter(user=user.profile.is_following()).all()
-    # except:
-    #     followed_photos = None
-    # return render(request, 'stream.html', {
-    #     'user': user,
-    #     'my_albums': my_albums.order_by('-date_created'),
-    #     'followed_albums': followed_albums.order_by('-date_created'),
-    #     'photos': photos.order_by('-date_uploaded'),
-    #     'followed_photos': followed_photos.order_by('-date_uploaded'),
-    # })
-
+    try:
+        albums = Album.objects.filter(user=user).order_by('-date_created')
+    except:
+        albums = None
+    try:
+        followed_albums = Album.objects.filter(user=user.profile.is_following()).order_by('-date_created')
+    except:
+        followed_albums = None
+    try:
+        photos = Photo.objects.filter(user=user).order_by('-date_uploaded')
+    except:
+        photos = None
+    try:
+        followed_photos = Photo.objects.filter(user=user.profile.is_following()).order_by('-date_uploaded')
+    except:
+        followed_photos = None
+    return render(request, 'stream.html', {
+        'user': user,
+        'albums': albums,
+        'followed_albums': followed_albums,
+        'photos': photos,
+        'followed_photos': followed_photos,
+    })
 
 
 class ImagerProfileUpdateView(UpdateView):
