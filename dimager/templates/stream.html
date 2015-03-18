@@ -1,25 +1,46 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% load thumbnail %}
 {% block content %}
 
-{% block title %}Stream: {{user}}{% endblock %}
-{% load thumbnail %}
-{% block body %}
-    <div id="profileInfo">
-        <h3>{{user}}'s Stream</h3>
-        <div id="photoStream"> 
-            {% for photo in photos %}
-                <div class="photo">
-                    {% thumbnail photo.image "1000x1000" as thumb %}
-                    <a href="{{ thumb.url }}" data-lightbox="streamphotos" data-title="{{photo.description}}">
-                    <img src="{{ thumb.url }}"></a>
-                    {% endthumbnail %}
-                    <div class="meta">
-                        <div class="photoTitle">By {{photo.user}}</div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+
+<h1>Stream</h1>
+<hr>
+<div id='album_gallery'>
+   <h3>Albums</h3>
+   {% for album in my_albums %}
+       {% thumbnail album.cover.picture "200x200" crop="center" as im %}
+           <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class='library_gallery'>
+       {% empty %}
+           <img src="{% static '/media/images/git.jpg' %}" height="200" width="200" class="library_gallery" />
+       {% endthumbnail %}
+   {% endfor %}
+   {% for album in followed_albums %}
+       {% thumbnail album.cover.picture "200x200" crop="center" as im %}
+           <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class='library_gallery'>
+       {% empty %}
+           <img src="{% static '/media/images/git.jpg' %}" height="200" width="200" class="library_gallery" />
+       {% endthumbnail %}
+   {% endfor %}
+</div>
+{% if not my_albums %}
+<div id='no_albums'>
+</div>
+{% endif %}
+<div id='photo_gallery'>
+   </hr>
+   <h3>Photos</h3>
+   {% for photo in photos %}
+   {% thumbnail photo.picture "200x200" crop="center" as im %}
+       <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class='library_gallery'>
+   {% endthumbnail %}
+   {% endfor %}
+   {% for photo in followed_photos %}
+   {% thumbnail photo.picture "200x200" crop="center" as im %}
+       <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class='library_gallery'>
+   {% endthumbnail %}
+   {% endfor %}
+</div>
+
+
 {% endblock %}
