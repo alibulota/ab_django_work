@@ -14,4 +14,4 @@ class UserForm(forms.ModelForm):
 class ImagerProfileForm(forms.ModelForm):
     class Meta:
         model = ImagerProfile
-        fields = ('picture')
+        fields = ('picture',)

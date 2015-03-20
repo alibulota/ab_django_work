@@ -74,3 +74,5 @@ class ImagerProfile(models.Model):
 
     def get_profile_stream(self):
         return Photo.objects.filter(profile=self).order_by('date_uploaded')
+
+    

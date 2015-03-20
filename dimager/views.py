@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from dimager.models import ImagerProfile
 from imager_images.models import Album, Photo, User
-from django.views.generic import UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 
 @login_required()
@@ -65,7 +65,8 @@ def stream(request):
     except:
         albums = None
     try:
-        followed_albums = Album.objects.filter(user=user.profile.is_following()).order_by('-date_created')
+        followed_albums = Album.objects.filter(user=user.
+                                               profile.is_following()).order_by('-date_created')
     except:
         followed_albums = None
     try:
@@ -73,7 +74,8 @@ def stream(request):
     except:
         photos = None
     try:
-        followed_photos = Photo.objects.filter(user=user.profile.is_following()).order_by('-date_uploaded')
+        followed_photos = Photo.objects.filter(user=user.
+                                               profile.is_following()).order_by('-date_uploaded')
     except:
         followed_photos = None
     return render(request, 'stream.html', {
