@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from imager_images.forms import UserForm, ImagerProfileForm
 # from media import profile_image
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from models import Photo, Album
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
@@ -52,8 +52,10 @@ class AddPhoto(CreateView):
         form.instance.user = self.request.user
         return super(AddPhoto, self).form_valid(form)
 
-    success_url = reverse_lazy('library')
+    # success_url = reverse_lazy('library')
 
+    def get_success_url(self):
+        return reverse('library')
 
 class PhotoEditUpdateView(UpdateView):
     model = Photo
@@ -66,7 +68,9 @@ class PhotoEditUpdateView(UpdateView):
         if photo_profile != user_profile:
             return redirect('/accounts/login/')
         return super(PhotoEditUpdateView, self).dispatch(request, *args, **kwargs)
-    success_url = reverse_lazy('library')
+    # success_url = reverse_lazy('library')
+
+    
 
 
 class AlbumEditUpdateView(UpdateView):
@@ -89,8 +93,7 @@ class AddAlbum(CreateView):
     template_name = 'album_add.html'
 
     def form_valid(self, form):
-        form.instance.profile = ImagerProfile.objects.get(
-            pk=self.request.user.profile.id)
+        form.instance.user = self.request.user
         return super(AddAlbum, self).form_valid(form)
 
     success_url = reverse_lazy('library')
