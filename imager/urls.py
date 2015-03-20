@@ -16,6 +16,7 @@ class MyRegistrationView(RegistrationView):
 urlpatterns = patterns('',
                        url(r'^$', main_views.home, name='home'),
                        # url(r'^blog/', include('blog.urls')),
+                       url(r'^', include('imager_images.urls')),
                        url(r'^accounts/', include('registration.backends.simple.urls')),
                        url(r'^admin/', include(admin.site.urls)),
 
@@ -46,9 +47,9 @@ urlpatterns = patterns('',
 
                        url(r'^stream/', 'dimager.views.stream'),
 
-                       url(r'^photo/add', 'imager_images.views.AddPhoto'),
+                       # url(r'^photo/add', 'imager_images.views.AddPhoto'),
 
-                       url(r'^album/add', 'imager_images.views.AddAlbum'),
+                       # url(r'^album/add', 'imager_images.views.AddAlbum'),
 
                        )
 if settings.DEBUG:
