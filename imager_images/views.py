@@ -1,11 +1,8 @@
-from django.shortcuts import render
 from imager_images.forms import UserForm, ImagerProfileForm
 # from media import profile_image
 from django.core.urlresolvers import reverse_lazy, reverse
 from models import Photo, Album
 from django.views.generic import CreateView, UpdateView
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import redirect_to_login
 from django.shortcuts import redirect
 from dimager.models import ImagerProfile
 
@@ -57,6 +54,7 @@ class AddPhoto(CreateView):
     def get_success_url(self):
         return reverse('library')
 
+
 class PhotoEditUpdateView(UpdateView):
     model = Photo
     fields = ['title', 'description', 'PUBLISHED']
@@ -69,8 +67,6 @@ class PhotoEditUpdateView(UpdateView):
             return redirect('/accounts/login/')
         return super(PhotoEditUpdateView, self).dispatch(request, *args, **kwargs)
     # success_url = reverse_lazy('library')
-
-    
 
 
 class AlbumEditUpdateView(UpdateView):

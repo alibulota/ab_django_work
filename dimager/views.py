@@ -90,6 +90,7 @@ def stream(request):
 class ImagerProfileUpdateView(UpdateView):
     model = ImagerProfile
     template_name_suffix = '_update_form'
+    context_object_name = 'profile'
     success_url = '/profile/'
     fields = [
         'profile_image',
@@ -107,3 +108,41 @@ class ImagerProfileUpdateView(UpdateView):
     def get_queryset(self):
         qs = super(ImagerProfileUpdateView, self).get_queryset()
         return qs.filter(user=self.request.user)
+
+
+@login_required()
+def profile(request):
+    user = request.user
+    try:
+        albums = Album.objects.filter(user=user).all()
+    except:
+        albums = None
+    profile = ImagerProfile.objects.get(user=user)
+    following = len(profile.followers.all())
+    num_photos = Photo.objects.filter(user=user).count()
+    return render(request, 'profile.html', {
+        'albums': albums,
+        'user': user,
+        'profile': profile,
+        'following': following,
+        'num_photo': num_photos
+    })
+
+
+@login_required()
+def user_profile(request, id):
+    user = User.objects.get(id=id)
+    try:
+        albums = Album.objects.filter(user=user).all()
+    except:
+        albums = None
+    profile = ImagerProfile.objects.get(user=user)
+    following = len(profile.followers.all())
+    num_photos = Photo.objects.filter(user=user).count()
+    return render(request, 'user_profile.html', {
+        'albums': albums,
+        'user': user,
+        'profile': profile,
+        'following': following,
+        'num_photo': num_photos
+    })
