@@ -91,8 +91,8 @@ class Dev(Base):
 class Prod(Base):
     import dj_database_url
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    DEBUG = False
-    TEMPLATE_DEBUG = False
+    DEBUG = True
+    TEMPLATE_DEBUG = DEBUG
     DATABASES = {
                 'default': dj_database_url.config()
                 }
