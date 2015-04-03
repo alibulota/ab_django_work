@@ -36,6 +36,7 @@ class Base(Settings):
         'dimager',
         'imager_images',
         'registration',
+        'sorl.thumbnail'
 
     )
 
