@@ -8,7 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 from configurations import Settings
-from secret import (HOST_PASSWORD, HOST_USER)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -87,7 +87,6 @@ class Dev(Base):
     DEBUG = True
     TEMPLATE_DEBUG = True
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 class Prod(Base):
@@ -98,11 +97,3 @@ class Prod(Base):
     DATABASES = {
                 'default': dj_database_url.config()
                 }
-
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 25
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = HOST_USER
-    EMAIL_HOST_PASSWORD = HOST_PASSWORD
-    DEFAULT_FROM_EMAIL = HOST_USER

@@ -74,8 +74,3 @@ class Album(models.Model):
 
     def __str__(self):
         return str(self.title)
-
-# @python_2_unicode_compatible
-# class Album_Admin(admin.ModelAdmin):
-#     search_fields = ["title"]
-#     list_display = ["title"]
