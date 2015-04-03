@@ -1,12 +1,22 @@
 from django.conf.urls import patterns, include, url
+# from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse_lazy
+from imager import views as main_views
+from registration.backends.simple.views import RegistrationView
+from django.conf import settings
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self, request, user):
+        return '/profile/'
 
 
 urlpatterns = patterns('',
-    url(r'^$', 'imager.views.home'),
-    # url(r'^blog/', include('blog.urls')),
+    url(r'^$', 'imager.views.home', name = 'home'),
+
+    url(r'^profile/', 'dimager.views.user_profile'),
+
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
@@ -27,4 +37,11 @@ urlpatterns = patterns('',
    
 
     url(r'^password/reset/done/$', auth_views.password_reset_done, name='auth_password_reset_done'),
+
+    # url(r'^library/', 'dimager.views.library', name='library'),
+
+    # url(r'^stream/', 'dimager.views.stream'),
 )
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
