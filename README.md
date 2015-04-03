@@ -1,2 +1,7 @@
 # django-imager
-This is a collaboration between Jake Anderson, Alicija Bulota, and Nick Draper.
+Much appreciation to Cris Ewing, James Warren, the Django Docs, and StackOverflow.
+
+
+Collaborators:
+Jake Anderson
+Nick Draper
